@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+# Run workflow on every push to the master branch
+on:
+  push:
+    branches: [ main ]
+permissions:
+  contents: write
+jobs:
+  deploy-to-github-pages:
+    # use ubuntu-latest image to run steps on
+    runs-on: ubuntu-latest
+    steps:
+    # uses GitHub's checkout action to checkout code form the master branch
+    - uses: actions/checkout@v2
+
+    # sets up .NET 8.0
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 8.0.*
+
+    # restores wasm-tools workload
+    - name: Restore required workloads
+      run: dotnet workload restore Web/FitDPI.sln
+      
+    # publishes Blazor project to the release-folder
+    - name: Publish .NET Project
+      run: dotnet publish Web/FitDPI.csproj -c Release -o release --nologo
+
+    # changes the base-tag in index.html from '/' to 'FitDPI' to match GitHub Pages repository subdirectory
+    - name: Change base-tag in index.html from / to FitDPI
+      run: sed -i 's/<base href="\/" \/>/<base href="\/FitDPI\/" \/>/g' release/wwwroot/index.html
+
+    # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+    - name: Add .nojekyll file
+      run: touch release/wwwroot/.nojekyll
+
+    - name: Commit wwwroot to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4.5.0
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: release/wwwroot
