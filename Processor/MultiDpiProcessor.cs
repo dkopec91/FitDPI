@@ -14,7 +14,7 @@ namespace MultiDpiProcessor
 
         public void ProcessImage(List<ScreenModel> screens, MemoryStream imageStream, bool keepAspectRatio, out string extension)
         {
-            if (true || screens == null || screens.Count == 0)
+            if (screens == null || screens.Count == 0)
             {
                 throw new Exception("Screens not configured");
             }
