@@ -1,0 +1,58 @@
+﻿@using System.Text.Json;
+@using MultiDpiProcessor;
+
+@inject AppService app;
+@inject IJSRuntime JSRuntime
+
+<div class="card mt-3">
+    <div class="card-header">
+        <button type="button" class="btn-sm btn-primary pt-0 pb-0">
+            Load images:
+            <InputFile OnChange="@ImportImages" multiple title="Import configuration" />
+        </button>
+    </div>
+    <div class="card-body">
+        @if (app?.ImageFiles != null)
+        {
+            <ul>
+                @foreach (var item in app.ImageFiles)
+                {
+                    <li>@item.Name</li>
+                }
+            </ul>
+            <hr />
+            <button type="button" class="btn-sm btn-primary" @onclick="StartProcessing">
+                Process files
+            </button>
+        }
+    </div>
+</div>
+
+@code {
+
+    private void ImportImages(InputFileChangeEventArgs e)
+    {
+        app.ImageFiles = e.GetMultipleFiles().ToList();
+    }
+
+    private async void StartProcessing()
+    {
+        foreach (var browserFile in app.ImageFiles)
+        {
+            using MemoryStream memoryStream = new MemoryStream();
+            await browserFile.OpenReadStream(long.MaxValue).CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+
+            new MultiDpiProcessor().ProcessImage(app.Screens, memoryStream, false, out string ext);
+
+            await JSRuntime.InvokeVoidAsync(
+                "downloadFromByteArray",
+                new
+                {
+                    ByteArray = memoryStream.ToArray(),
+                    FileName = $"out_{browserFile.Name}",
+                    ContentType = "image/jpeg"
+                });
+        }
+    }
+}

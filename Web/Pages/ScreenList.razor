@@ -1,0 +1,140 @@
+﻿@using MultiDpiProcessor;
+@using System.Text.Json;
+@inject AppService app
+@inject IJSRuntime JSRuntime
+
+
+
+<div class="card">
+    <div class="card-header">
+        <button type="button" class="btn-sm btn-primary" @onclick="AddScreen">Add display</button>
+        <button type="button" class="btn-sm btn-secondary ms-3" @onclick="ExportConfig">Export configuration</button>
+        <button type="button" class="btn-sm btn-secondary pt-0 pb-0">
+            Import configuration:
+            <InputFile OnChange="@ImportConfig" title="Import configuration" />
+        </button>
+    </div>
+    <div class="card-body">
+        @if (app.Screens != null)
+        {
+            @foreach (var screen in app.Screens)
+            {
+                <div class="card mb-2">
+                    <div class="card card-header">
+                        <div class="row">
+                            <div class="col-11" />
+                            <div class="col-1">
+                                <button class="btn-warning float-end" @onclick="() => Delete(screen)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-body">
+                        <div class="row mb-2">
+                            <div class="form-group col-2">
+                                <label class="label" for="setPixelWidth">Screen X resolution</label>
+                                <InputNumber @bind-Value="screen.PixelWidth" type="number" class="form-control form-control-sm" id="setPixelWidth" />
+                            </div>
+                            <div class="form-group col-2">
+                                <label class="label" for="setPixelHeight">Screen Y resolution</label>
+                                <InputNumber @bind-Value="screen.PixelHeight" type="number" class="form-control form-control-sm" id="setPixelHeight" />
+                            </div>
+                            <div class="form-group col-2">
+                                <label class="label" for="setXPosition">Screen X Position</label>
+                                <InputNumber @bind-Value="screen.LocationX" type="number" class="form-control form-control-sm" id="setXPosition" />
+                            </div>
+                            <div class="form-group col-2">
+                                <label class="label" for="setYPosition">Screen Y Position</label>
+                                <InputNumber @bind-Value="screen.LocationY" type="number" class="form-control form-control-sm" id="setYPosition" />
+                            </div>
+                            <div class="form-group col-2">
+                                <label class="label" for="setDpi">DPI</label>
+                                <InputNumber @bind-Value="screen.Ppi" type="number" class="form-control form-control-sm" id="setDpi" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-2">
+                                <label class="label" for="setFrameOffsetLeft">Frame offset - Left</label>
+                                <InputNumber @bind-Value="screen.FrameOffset.Left" type="number" class="form-control form-control-sm" id="setFrameOffsetLeft" disabled="true" />
+                            </div>
+                            <div class="form-group col-2">
+                                <label class="label" for="setFrameOffsetRight">Frame offset - Right</label>
+                                <InputNumber @bind-Value="screen.FrameOffset.Right" type="number" class="form-control form-control-sm" id="setFrameOffsetRight" disabled="true" />
+                            </div>
+                            <div class="form-group col-2">
+                                <label class="label" for="setFrameOffsetTop">Frame offset - Top</label>
+                                <InputNumber @bind-Value="screen.FrameOffset.Top" type="number" class="form-control form-control-sm" id="setFrameOffsetTop" disabled="true" />
+                            </div>
+                            <div class="form-group col-2">
+                                <label class="label" for="setFrameOffsetBottom">Frame offset - Bottom</label>
+                                <InputNumber @bind-Value="screen.FrameOffset.Bottom" type="number" class="form-control form-control-sm" id="setFrameOffsetBottom" disabled="true" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        app.Screens = new List<ScreenModel>()
+        {
+            #if DEBUG
+            new ScreenModel()
+            {
+                PixelWidth = 2560,
+                PixelHeight = 1600,
+                Ppi = 101
+            },
+            new ScreenModel()
+            {
+                PixelWidth = 1920,
+                PixelHeight = 1200,
+                Ppi = 94,
+                LocationX = -1920,
+                LocationY = 0
+            },
+            new ScreenModel()
+            {
+                PixelWidth = 1920,
+                PixelHeight = 1200,
+                Ppi = 94,
+                LocationX = 2560,
+                LocationY = 0
+            }
+            #else
+            new ScreenModel(),
+            new ScreenModel()
+            #endif
+        };
+        base.OnInitialized();
+    }
+
+    public void AddScreen() => app?.Screens?.Add(new ScreenModel());
+
+    public void Delete(ScreenModel screen) => app.Screens = app.Screens?.Where(s => s.Id != screen.Id).ToList();
+
+    public async void ExportConfig()
+    {
+        var screensConfig = JsonSerializer.SerializeToUtf8Bytes(app.Screens);
+
+        await JSRuntime.InvokeVoidAsync(
+            "downloadFromByteArray",
+            new
+            {
+                ByteArray = screensConfig,
+                FileName = "FitDPI_config.xml",
+                ContentType = "text/xml"
+            });
+    }
+
+    private async void ImportConfig(InputFileChangeEventArgs e)
+    {
+        var configFile = await new StreamReader(e.File.OpenReadStream()).ReadToEndAsync();
+        app.Screens = JsonSerializer.Deserialize<List<ScreenModel>>(configFile);
+        StateHasChanged();
+    }
+}
