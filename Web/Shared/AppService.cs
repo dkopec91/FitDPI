@@ -5,8 +5,8 @@ namespace FitDPI.Shared
 {
     public class AppService
     {
-        public List<ScreenModel>? Screens { get; set; }
+        public List<ScreenModel> Screens { get; set; } = [];
 
-        public List<IBrowserFile> ImageFiles { get; set; }
+        public List<IBrowserFile> ImageFiles { get; set; } = [];
     }
 }

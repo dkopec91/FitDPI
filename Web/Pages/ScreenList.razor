@@ -112,7 +112,7 @@
 
     public void AddScreen() => app?.Screens?.Add(new ScreenModel());
 
-    public void Delete(ScreenModel screen) => app.Screens = app.Screens?.Where(s => s.Id != screen.Id).ToList();
+    public void Delete(ScreenModel screen) => app.Screens = app.Screens?.Where(s => s.Id != screen.Id).ToList() ?? new List<ScreenModel>();
 
     public async void ExportConfig()
     {
@@ -131,7 +131,7 @@
     private async void ImportConfig(InputFileChangeEventArgs e)
     {
         var configFile = await new StreamReader(e.File.OpenReadStream()).ReadToEndAsync();
-        app.Screens = JsonSerializer.Deserialize<List<ScreenModel>>(configFile);
+        app.Screens = JsonSerializer.Deserialize<List<ScreenModel>>(configFile) ?? new List<ScreenModel>();
         StateHasChanged();
     }
 }
