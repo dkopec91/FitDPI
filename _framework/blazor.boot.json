@@ -1,15 +1,15 @@
 {
   "mainAssemblyName": "FitDPI",
   "resources": {
-    "hash": "sha256-ot6XSreTDnO87kmRe5r0/QRTXIjibETKpIk3KkEVSE4=",
+    "hash": "sha256-uYaG9WRLmX13hIYc8HFsqlQx0Ciry7jNArIqEG5QJmE=",
     "jsModuleNative": {
       "dotnet.native.8.0.2.v50djsa6i1.js": "sha256-fybMD0pHbmAmDvbe4okX2oA0xL/NqpFTbr3lvZj+8Xo="
     },
     "jsModuleRuntime": {
-      "dotnet.runtime.8.0.2.13z0dbizkm.js": "sha256-54KSaoOArNfygQbV+r4B5y3ys53v2tnvFIyZcZiUmi0="
+      "dotnet.runtime.8.0.2.xpxg2k6ml2.js": "sha256-54KSaoOArNfygQbV+r4B5y3ys53v2tnvFIyZcZiUmi0="
     },
     "wasmNative": {
-      "dotnet.native.wasm": "sha256-JEmnkrpG5PxbqpQZ04WIosRm7Kybug7VR1KOOUmxnjQ="
+      "dotnet.native.wasm": "sha256-SSEDBFCGA77j0HAZcvgB7Vrqx9uRAuz7rMkjsDtT8yo="
     },
     "icu": {
       "icudt_CJK.dat": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
@@ -17,7 +17,7 @@
       "icudt_no_CJK.dat": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs="
     },
     "assembly": {
-      "FitDPI.wasm": "sha256-XLRev3C6xDoZCRzEfpz6bH533PO70RxdbIV/qWNVJ/U=",
+      "FitDPI.wasm": "sha256-tiJ80yKiGpCBE+ICi+eUjafz60aN/oE9zG/yo4EJEHU=",
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-L3z9gLy453ChDsq4RXjjKDg5IncprVXlOCxwTUv0LPc=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-x80ilMiELWpp5TGcGTytWsb1MOgulnMuu990oDOgM7Y=",
       "Microsoft.AspNetCore.Components.Web.wasm": "sha256-++t/sdTGR2raDknEb2paZdwdGI6dHZwwChRrnXiI5bs=",
@@ -33,7 +33,7 @@
       "Microsoft.Extensions.Primitives.wasm": "sha256-Ms2HR5Gpug/0uRAzdk4SUNT76Ml3CjFv9Jo+dUIMGac=",
       "Microsoft.JSInterop.wasm": "sha256-46ISrKZtHoqFTL4haLcjkvz5lrkP1CmIPYY73Bc8nIY=",
       "Microsoft.JSInterop.WebAssembly.wasm": "sha256-CQVLCKiSxLN5ghyJZG3mhnMGRROdqrbNUjtAXB0nWb8=",
-      "MultiDpiProcessor.wasm": "sha256-DjQQUdirHJio0Kym1KNLow7lkbeQDEFiGyH0daxZrQM=",
+      "MultiDpiProcessor.wasm": "sha256-uoXGIpxpw4PypIrXkpwgeKN7SpOjlPKZ1NH8qZpe6jM=",
       "SixLabors.ImageSharp.Drawing.wasm": "sha256-4PIV89psQBX5FPMjDsDvuIXaHMHuQpxn4+LtVbjy5b4=",
       "SixLabors.ImageSharp.wasm": "sha256-e91Q3zsFZw9paaRIhv5cGBtUkQpexw41Vzb18lrPF5c=",
       "System.Collections.Concurrent.wasm": "sha256-NoX9a0Uppv1jfiHOGlC1IiUjvJYk/vWRLC3IaRBGXMs=",
