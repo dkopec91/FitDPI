@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     # uses GitHub's checkout action to checkout code form the master branch
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     # sets up .NET 8.0
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.*
+        dotnet-version: '8.0.x'
 
     # restores wasm-tools workload
     - name: Restore required workloads
